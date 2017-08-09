@@ -1,38 +1,55 @@
 import Particle from "./engine/Particle";
 import { colorCircle, startingPoint } from "./engine/Helpers";
 
-let canvas = document.getElementsByTagName("canvas")[0];
-let ctx = canvas.getContext("2d");
-let particles = [];
+const canvas = document.getElementsByTagName("canvas")[0];
+const ctx = canvas.getContext("2d");
+const WINDOW_H = canvas.width;
+const WINDOW_W = canvas.height;
+const particles = [];
 
-for (var i = 0; i < 2000; i++) {
-  var ang = Math.floor(Math.random() * 45) + 70;
-  var speed = Math.random() * i;
-  var size = Math.floor(Math.random() * 10);
-  var decay = Math.random();
-  let particle = new Particle(240, 240, 1, ang, speed, size, decay);
-  particles.push(particle);
+function createSystem(n, mousePosX, mousePosY) {
+  for (var i = 0; i < n; i++) {
+    var ang = Math.floor(Math.random() * 360);
+    var speed = document.getElementById("speed").value * i || Math.random() * i;
+    var size = document.getElementById("size").value || Math.random();
+    var decay = Math.random();
+    let particle = new Particle(
+      mousePosX,
+      mousePosY,
+      0.9,
+      ang,
+      speed,
+      size,
+      decay,
+      [190, 175, 177, 1]
+    );
+    particles.push(particle);
+  }
 }
-
-const WINDOW_H = 500;
-const WINDOW_W = 500;
 
 const driver = () => {
   requestAnimationFrame(driver);
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, WINDOW_W, WINDOW_H);
-  startingPoint(250, 250);
+  // startingPoint(250, 250);
 
   for (var i = 0; i < particles.length; i++) {
     var current = particles[i];
-    particles[i].update(0.02);
+    current.update(0.02);
     colorCircle(
       current.position.x,
       current.position.y,
       current.size,
       current.color
     );
+    if (current.life <= 0) {
+      particles.splice(i, 1);
+    }
   }
+};
+
+window.onclick = function(e) {
+  createSystem(500, e.clientX, e.clientY);
 };
 
 driver();

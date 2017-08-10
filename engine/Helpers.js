@@ -1,7 +1,4 @@
-let canvas = document.getElementsByTagName("canvas")[0];
-let ctx = canvas.getContext("2d");
-
-export const colorCircle = (centerX, centerY, radius, fillColor) => {
+export const colorCircle = (ctx, centerX, centerY, radius, fillColor) => {
   ctx.fillStyle = fillColor;
   ctx.beginPath();
   ctx.arc(centerX, centerY, radius, 0, Math.PI * 2, true);

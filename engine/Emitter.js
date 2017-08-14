@@ -1,36 +1,43 @@
 import Particle from "./Particle";
-import { colorCircle } from "./Helpers";
+import { colorCircle, colorArrayToString } from "./Helpers";
 
-let Emitter = function(size, color) {
+let Emitter = function(size, particleSize, startX, startY, color) {
   //"constructor"
   this.particles = [];
-  this.size = size || 250;
-  this.color = color || "rgb(255,255,255)";
-  this.particleSize = Math.random();
+  this.size = size || 100;
+  this.color = color || [255, 255, 255, 1];
+  this.particleSize = particleSize || Math.random();
 
   for (var i = 0; i < this.size; i++) {
     var ang = Math.floor(Math.random() * 360);
-    var speed = Math.random() * i;
-    var particle = new Particle(250, 250, 1, ang, 2);
+    var speed = Math.random();
+    var particle = new Particle(startX, startY, 1, ang, speed);
+    particle.color = this.color;
     this.particles.push(particle);
   }
 
   //update position of particle
   this.update = (ctx, dt) => {
     for (var i = 0; i < this.particles.length; i++) {
-      var current = this.particles[i];
-      current.update(dt);
+      var particle = this.particles[i];
+      this.updateParticle(particle, dt);
       colorCircle(
         ctx,
-        current.position.x,
-        current.position.y,
+        particle.position.x,
+        particle.position.y,
         this.particleSize,
-        this.color
+        colorArrayToString(particle.color)
       );
-      if (current.life <= 0) {
+      if (particle.life <= 0) {
         this.particles.splice(i, 1);
       }
     }
+  };
+
+  this.updateParticle = (particle, dt) => {
+    particle.update(dt);
+    particle.life /= dt;
+    particle.color[3] -= 0.0001;
   };
   //draw particle
   this.draw = () => {};

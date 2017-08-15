@@ -18,3 +18,12 @@ export const colorArrayToString = arr => {
   str += arr[3] + ")";
   return str;
 };
+
+export const hexToArray = hex => {
+  let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  let arr = [];
+  arr[0] = parseInt(result[1], 16);
+  arr[1] = parseInt(result[2], 16);
+  arr[2] = parseInt(result[3], 16);
+  return arr;
+};

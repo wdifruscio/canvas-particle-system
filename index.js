@@ -1,55 +1,29 @@
 import Particle from "./engine/Particle";
-import { colorCircle, startingPoint } from "./engine/Helpers";
+import Emitter from "./engine/Emitter";
+import { colorCircle, startingPoint, hexToArray } from "./engine/Helpers";
 
 const canvas = document.getElementsByTagName("canvas")[0];
 const ctx = canvas.getContext("2d");
 const WINDOW_H = canvas.width;
 const WINDOW_W = canvas.height;
-const particles = [];
-
-function createSystem(n, mousePosX, mousePosY) {
-  for (var i = 0; i < n; i++) {
-    var ang = Math.floor(Math.random() * 360);
-    var speed = document.getElementById("speed").value * i || Math.random() * i;
-    var size = document.getElementById("size").value || Math.random();
-    var decay = Math.random();
-    let particle = new Particle(
-      mousePosX,
-      mousePosY,
-      0.9,
-      ang,
-      speed,
-      size,
-      decay,
-      [190, 175, 177, 1]
-    );
-    particles.push(particle);
-  }
-}
+let emitter;
 
 const driver = () => {
   requestAnimationFrame(driver);
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, WINDOW_W, WINDOW_H);
-  // startingPoint(250, 250);
-
-  for (var i = 0; i < particles.length; i++) {
-    var current = particles[i];
-    current.update(0.02);
-    colorCircle(
-      current.position.x,
-      current.position.y,
-      current.size,
-      current.color
-    );
-    if (current.life <= 0) {
-      particles.splice(i, 1);
-    }
+  if (emitter) {
+    let updateSpeed = document.getElementById("speed").value;
+    emitter.update(ctx, updateSpeed);
   }
 };
 
-window.onclick = function(e) {
-  createSystem(500, e.clientX, e.clientY);
+canvas.onclick = function(e) {
+  let num = document.getElementById("size").value;
+  let particleSize = document.getElementById("particleSize").value;
+  let colorArr = hexToArray(document.getElementById("color").value);
+  colorArr[3] = document.getElementById("opacity").value;
+  emitter = new Emitter(num, particleSize, e.clientX, e.clientY, colorArr);
 };
 
 driver();

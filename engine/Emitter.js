@@ -1,13 +1,13 @@
 import Particle from "./Particle";
 import { colorCircle, colorArrayToString } from "./Helpers";
 
-let Emitter = function(size, particleSize, startX, startY, color, gravity) {
+let Emitter = function(size, particleSize, startX, startY, color, options) {
   //"constructor"
   this.particles = [];
   this.size = size || 100;
   this.color = color || [255, 255, 255, 1];
   this.particleSize = particleSize || Math.random();
-  gravity ? (this.gravity = gravity) : null;
+  options.gravity ? (this.gravity = options.gravity) : null;
 
   for (var i = 0; i < this.size; i++) {
     var ang = Math.floor(Math.random() * 360);
@@ -30,18 +30,22 @@ let Emitter = function(size, particleSize, startX, startY, color, gravity) {
         colorArrayToString(particle.color)
       );
       if (particle.life <= 0) {
-        this.particles.splice(i, 1);
+        if (!options.infinite) {
+          this.particles.splice(i, 1);
+        } else {
+          particle.position.x = startX;
+          particle.position.y = startY;
+        }
       }
     }
   };
 
   this.updateParticle = (particle, dt) => {
-    // if (this.gravity && particle.position.y < 100) {
-    //   particle.velocity.y /= this.gravity;
-    // }
     particle.update(dt);
-    particle.life /= dt;
-    particle.color[3] -= Math.random() / 10000;
+    particle.life -= dt / 100;
+    if (particle.life < 0.5) {
+      particle.color[3] -= Math.random() / 10000;
+    }
   };
   //draw particle
   this.draw = () => {};

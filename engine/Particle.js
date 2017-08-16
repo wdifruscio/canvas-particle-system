@@ -1,6 +1,5 @@
 let Particle = function(x, y, life, angle, speed) {
   let angleInRad = angle * Math.PI / 180;
-
   this.life = life;
 
   this.position = {

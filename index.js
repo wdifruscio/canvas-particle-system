@@ -7,6 +7,7 @@ const ctx = canvas.getContext("2d");
 const WINDOW_H = canvas.width;
 const WINDOW_W = canvas.height;
 let emitter;
+let togglePause = document.getElementById("pause");
 
 const driver = () => {
   requestAnimationFrame(driver);
@@ -23,7 +24,9 @@ canvas.onclick = function(e) {
   let particleSize = document.getElementById("particleSize").value;
   let colorArr = hexToArray(document.getElementById("color").value);
   colorArr[3] = document.getElementById("opacity").value;
-  emitter = new Emitter(num, particleSize, e.clientX, e.clientY, colorArr);
+  let infinite = document.getElementById("infinite").checked;
+  console.log(infinite);
+  emitter = new Emitter(num, particleSize, e.clientX, e.clientY, colorArr, {});
 };
 
 driver();

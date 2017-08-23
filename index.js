@@ -25,8 +25,11 @@ canvas.onclick = function(e) {
   let colorArr = hexToArray(document.getElementById("color").value);
   colorArr[3] = document.getElementById("opacity").value;
   let infinite = document.getElementById("infinite").checked;
-  console.log(infinite);
-  emitter = new Emitter(num, particleSize, e.clientX, e.clientY, colorArr, {});
+  let duration = document.getElementById("duration").value;
+  emitter = new Emitter(num, particleSize, e.clientX, e.clientY, colorArr, {
+    infinite: infinite,
+    duration: duration
+  });
 };
 
 driver();

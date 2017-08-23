@@ -11,7 +11,7 @@
 <body>
     <canvas height="500" width="500"></canvas>
     <form>
-        <label for="">Emitter</label>
+        <h2>Emitter</h2>
         <hr>
         <label for="">Color</label>
         <input type="color" id="color" value="#ffffff">
@@ -27,8 +27,14 @@
         <label for="">particle size</label>
         <input type="text" name="" id="particleSize" value="1">
         <hr>
-        <label>infinite</label>
-        <input type="checkbox" id="infinite">
+
+        <fieldset>
+            <h3>Other Options</h3>
+            <label>infinite</label>
+            <input type="checkbox" id="infinite">
+            <label for="">duration</label>
+            <input type="text" name="" id="duration" value="1">
+        </fieldset>
     </form>
 </body>
 <script src="app.bundle.js "></script>
